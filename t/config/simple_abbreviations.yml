@@ -1,0 +1,14 @@
+1: 
+  Match:
+    Book: ['Genèse', 'Genese']
+    Abbreviation: ['Ge']
+  Normalized: 
+    Book: Genèse
+    Abbreviation: Ge
+2: 
+  Match:
+    Book: ['Exode']
+    Abbreviation: ['Ex']
+  Normalized: 
+    Book: Exode
+    Abbreviation: Ex

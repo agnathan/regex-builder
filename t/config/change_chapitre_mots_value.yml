@@ -1,0 +1,114 @@
+---
+regex:
+  #
+  #	Définitions des abréviations 
+  #
+  definitions: /outils/ReferenceBiblique/config/MacArthur_BOL_abréviations.yml
+
+  #################################################################################### 
+  # Définitions des expressions régulières
+  #################################################################################### 
+  #	Définitions des chiffres
+
+  # chapitre: c'est un nombre qui indique un chapitre de la Bible
+  # chapitre: \d{1,3}
+
+  # verset: c'est un nombre qui indique un chapitre de la Bible
+  # verset: \d{1,3}
+
+  # chiffre: c'est un nombre
+  # chiffre: \d{1,3}
+  #################################################################################### 
+
+  # Définitions de la ponctuation
+  # cv_separateur : vous pouvez trouver ce entre un chapitre et un verset
+  # cv_separateur: (?::|\.)
+
+  # separateur: cette sépare deux références bibliques, mais il ne don pas de contexte
+  # separateur: ;
+  separateur: (?:\bet de\b|\bet\b) 
+
+  # cl_separateur: cette sépare deux références bibliques et que le deuxième référence est un référence d'un chaptire
+  # cl_separateur: ;
+  cl_separateur: (?:;) 
+
+  # vl_separateur : cette sépare deux références bibliques et que le deuxième référence est un référence d'un verset
+  # vl_separateur: ,
+  vl_separateur: (?:,) 
+
+  # intervale: ce correspond à tous les types de tiret
+  intervale: (?:-|–|−|à|au verset)
+
+  # cl_ou_vl_separateur: ce correspond à tous les types de separateur entre références biblique
+  # cl_ou_vl_separateur: (?:;|,)
+
+
+  #######################################################################################################
+  # Les mots donne contexte aux référence biblique
+  # Par Exemple: 
+  #   chapitre_mots: 'voir la chapitre'
+  #   texte: voir la chapitre 9
+  # 
+  #   Avec cette texte 'voir la chapitre' comme chapitre_mots le 9 peu être indentifié comme un chapitre
+  #######################################################################################################
+
+  # reference_mots : les mots qui indique que le prochain texte est un reference, mais il ne don pas de contexte (comme CHAPTER, VERSE)
+  #reference_mots : (?:voir aussi|voir|\(voir|\bde\b|dans|Dans)
+
+  # chapitre_mots : les mots qui indique que le prochain référence est un chapitre référence 
+  chapitre_mots: (?:\(|voir aussi|voir|\(voir|\bde\b|dans|Dans|dans les chapitres|\[|se rapporte à|voyez également|par ex\.|A partir de|Au verset|au verset|passage de|\(chap\.)
+
+  # verset_mots : les mots qui indique que le prochain référence est un verset référence
+  verset_mots: (?:vv?\.|du verset|des versets|les versets|voir aussi v.|le verset|aux versets|au verse|les versets suivants \()
+
+  # voir_mots : les mots qui indique que le prochain référence est un verset référence
+  # voir_mots:
+
+  #################################################################################### 
+  # Définitions de les expressions avec livres 
+  #################################################################################### 
+  # livres_numerique : Ceci est une liste de tous les livres qui commencent par un chiffre  
+  # my $livres_numerique = qr/
+  #      Samuel|S|Rois|R|Chroniques|Ch|Corinthiens|Co|Thessaloniciens|Th|Timothée|Ti|Pierre|Pi|Jean|Jn|Esras|Es|Maccabees|Ma|Psalm|Ps
+  #  /x;
+
+  # livres : le nom complet de tous les livres, avec et sans accents
+  #  my $livres = qr/
+  #         Genèse|Genese|Exode|Lévitique|Levitique|Nombres|Deutéronome|Deuteronome|Josué|Josue|Juges|Ruth|1[\s ]*Samuel|2[\s ]*Samuel|1[\s ]*Rois|2[\s ]*Rois|1[\s ]*Chroniques|2[\s ]*Chroniques|Esdras|Néhémie|Nehemie|Esther|Job|Psaume|Psaumes|Proverbes|Ecclésiaste|Ecclesiaste|Cantique[\s ]*des[\s ]*Cantiqu|Ésaïe|Esaie|Jérémie|Jeremie|Lamentations|Ézéchiel|Ezechiel|Daniel|Osée|Osee|Joël|Joel|Amos|Abdias|Jonas|Michée|Michee|Nahum|Habacuc|Sophonie|Aggée|Aggee|Zacharie|Malachie|Matthieu|Marc|Luc|Jean|Actes|Romains|1[\s ]*Corinthiens|2[\s ]*Corinthiens|Galates|Éphésiens|Ephesiens|Philippiens|Colossiens|1[\s ]*Thessaloniciens|2[\s ]*Thessaloniciens|1[\s ]*Timothée|1[\s ]*Timothee|2[\s ]*Timothée|2[\s ]*Timothee|Tite|Philémon|Philemon|Hébreux|Hebreux|Jacques|1[\s ]*Pierre|2[\s ]*Pierre|1[\s ]*Jean|2[\s ]*Jean|3[\s ]*Jean|Jude|Apocalypse
+  # /x;
+   
+  # abbreviations : le nom complet de tous les abbreviations, avec et sans accents
+
+reference:
+  # 'formatter' peut être ces valeurs: 
+  #         ReferenceBiblique::ReferenceFormatter::normalize
+  #         ReferenceBiblique::ReferenceFormatter::bol
+  #         ReferenceBiblique::ReferenceFormatter::bol_test
+  #         ReferenceBiblique::ReferenceFormatter::logos
+  #         ReferenceBiblique::ReferenceFormatter::colorized
+  formatter: ReferenceBiblique::ReferenceFormatter::bol_test
+  # 'book_format' peut être ces valeurs: CANONICAL_NAME, ABBREVIATION, ORIGINAL  
+  book_format: ORIGINAL 
+  # cvs : le chapitre-verset separateur. Ex Ge 1:1. ':' est le cvs.
+  cvs: :
+ReferenceList:
+  # 'formatter' peut être ces valeurs: bol_list 
+  formatter: ReferenceBiblique::ReferenceListFormatter::bol_list_test
+
+  # grouping: for the Bible Online (BOL) this can have the following values: BOOK, CHAPTER, VERSE
+  #  For example when giving a reference these transformations take place:
+  #    BOOK Grouping    : Mt 1:1, 2, 3; 4:5; Jn 3:16  ==> \\Mt 1:1, 2, 3; 4:5; Jn 3:16\\
+  #    CHAPTER Grouping : Mt 1:1, 2, 3; 4:5; Jn 3:16  ==> \\Mt 1:1, 2, 3; 4:5\\; \\Jn 3:16\\
+  #    VERSE Grouping   : Mt 1:1, 2, 3; 4:5; Jn 3:16  ==> \\Mt 1:1, 2, 3\\; \\Mt 4:5\\; \\Jn 3:16\\
+  #    NONE Grouping    : Mt 1:1, 2, 3; 4:5; Jn 3:16  ==> \\Mt 1:1\\, \\Mt 1:2\\, \\Mt 1:3\\; \\Mt 4:5\\; \\Jn 3:16\\
+  grouping: BOOK
+  book_separater: ; 
+  chapter_list_separateur: ; 
+  verse_list_separateur: , 
+versification:
+  source: NEG
+  target: KJV
+  mapping:
+    file: config/NEG.RMP
+    from: NEG 
+    to: KJV 
